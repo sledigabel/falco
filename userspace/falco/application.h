@@ -27,7 +27,12 @@ limitations under the License.
 // For now, it is only responsible for command line options.
 #pragma once
 
+#include "configuration.h"
+#include "grpc_server.h"
+#include "webserver.h"
+
 #include "app_cmdline_options.h"
+#include "app_action_manager.h"
 
 #include <string>
 
@@ -36,15 +41,63 @@ namespace app {
 
 class application {
 public:
+	class action_state {
+	public:
+		action_state();
+		virtual ~action_state();
+
+		bool restart;
+		bool terminate;
+		bool reopen_outputs;
+
+		std::shared_ptr<falco_configuration> config;
+		std::shared_ptr<falco_outputs> outputs;
+		std::shared_ptr<falco_engine> engine;
+		std::shared_ptr<sinsp> inspector;
+		std::set<std::string> enabled_sources;
+
+		// The event source is syscall by default. If an input
+		// plugin was found, the source is the source of that
+		// plugin.
+		std::string event_source;
+
+		std::list<sinsp_plugin::info> plugin_infos;
+
+                // All filterchecks created by plugins go in this
+                // list. If we ever support multiple event sources at
+                // the same time, this (and the below factories) will
+                // have to be a map from event source to filtercheck
+                // list.
+		filter_check_list plugin_filter_checks;
+
+		std::map<string,uint64_t> required_engine_versions;
+
+		std::string cmdline;
+
+		bool trace_is_scap;
+
+		falco::grpc::server grpc_server;
+		std::thread grpc_server_thread;
+
+		falco_webserver webserver;
+	};
+
+	static std::string s_syscall_source;
+	static std::string s_k8s_audit_source;
 
 	application();
 	virtual ~application();
 
 	cmdline_options &options();
+	action_state &state();
+
 	bool init(int argc, char **argv, std::string &errstr);
 
-private:
+	run_result run();
 
+private:
+	std::shared_ptr<action_state> m_state;
+	action_manager m_action_manager;
 	cmdline_options m_cmdline_options;
 	bool m_initialized;
 };
