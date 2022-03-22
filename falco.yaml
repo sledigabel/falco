@@ -44,7 +44,11 @@ rules_file:
 # init_config/open_params for the cloudtrail plugin, see the README at
 # https://github.com/falcosecurity/plugins/blob/master/plugins/cloudtrail/README.md.
 plugins:
-  - name: cloudtrail
+  - name: k8saudit
+    library_path: libk8saudit.so
+    init_config: ""
+    open_params: "http://:9876/k8s-audit"
+   - name: cloudtrail
     library_path: libcloudtrail.so
     init_config: ""
     open_params: ""
@@ -56,7 +60,7 @@ plugins:
 # loaded and enabled by default. If you want to use the above plugins,
 # set a meaningful init_config/open_params for the cloudtrail plugin
 # and then change this to:
-# load_plugins: [cloudtrail, json]
+# load_plugins: [k8saudit, json]
 load_plugins: []
 
 # If true, the times displayed in log messages and output messages
@@ -218,7 +222,6 @@ stdout_output:
 webserver:
   enabled: true
   listen_port: 8765
-  k8s_audit_endpoint: /k8s-audit
   k8s_healthz_endpoint: /healthz
   ssl_enabled: false
   ssl_certificate: /etc/falco/falco.pem
