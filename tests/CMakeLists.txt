@@ -14,24 +14,13 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 #
-if(MINIMAL_BUILD)
-  set(
-    FALCO_TESTS_SOURCES
-    test_base.cpp
-    engine/test_rulesets.cpp
-    engine/test_falco_utils.cpp
-    falco/test_configuration.cpp
-  )
-else()
-  set(
-    FALCO_TESTS_SOURCES
-    test_base.cpp
-    engine/test_rulesets.cpp
-    engine/test_falco_utils.cpp
-    falco/test_configuration.cpp
-    falco/test_webserver.cpp
-  )
-endif()
+set(
+  FALCO_TESTS_SOURCES
+  test_base.cpp
+  engine/test_rulesets.cpp
+  engine/test_falco_utils.cpp
+  falco/test_configuration.cpp
+)
 
 set(FALCO_TESTED_LIBRARIES falco_engine ${YAMLCPP_LIB})
 

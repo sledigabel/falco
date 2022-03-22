@@ -146,8 +146,6 @@ if(NOT MINIMAL_BUILD)
   # libcurl
   include(curl)
 
-  # civetweb
-  include(civetweb)
 endif()
 
 include(cxxopts)

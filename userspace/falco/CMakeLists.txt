@@ -69,7 +69,6 @@ if(NOT MINIMAL_BUILD)
     APPEND FALCO_SOURCES
     outputs_grpc.cpp
     outputs_http.cpp
-    webserver.cpp
     grpc_context.cpp
     grpc_server_impl.cpp
     grpc_request_context.cpp
@@ -97,8 +96,6 @@ if(NOT MINIMAL_BUILD)
     list(APPEND FALCO_DEPENDENCIES grpc)
     list(APPEND FALCO_LIBRARIES "${GRPC_LIBRARIES}")
   endif()
-
-  list(APPEND FALCO_DEPENDENCIES civetweb)
 
   list(
     APPEND FALCO_LIBRARIES
