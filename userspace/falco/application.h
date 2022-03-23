@@ -28,8 +28,10 @@ limitations under the License.
 #pragma once
 
 #include "configuration.h"
+#ifndef MINIMAL_BUILD
 #include "grpc_server.h"
 #include "webserver.h"
+#endif
 
 #include "app_cmdline_options.h"
 #include "app_action_manager.h"
@@ -75,11 +77,12 @@ public:
 		std::string cmdline;
 
 		bool trace_is_scap;
-
+#ifndef MINIMAL_BUILD
 		falco::grpc::server grpc_server;
 		std::thread grpc_server_thread;
 
 		falco_webserver webserver;
+#endif
 	};
 
 	static std::string s_syscall_source;
